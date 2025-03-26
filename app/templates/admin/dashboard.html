@@ -1,0 +1,39 @@
+<!-- templates/admin/dashboard.html -->
+{% extends "admin/base.html" %}
+
+{% block title %}Admin Dashboard - Stroke Education{% endblock %}
+
+{% block content %}
+<div class="admin-dashboard">
+    <h2>Welcome to the Admin Dashboard</h2>
+    <p>Manage stroke education content from here.</p>
+    
+    <div class="dashboard-stats">
+        <div class="stat-card">
+            <div class="stat-value">{{ stroke_types_count }}</div>
+            <div class="stat-label">Stroke Types</div>
+            <a href="{{ url_for('admin.stroke_types') }}" class="btn btn-secondary">Manage</a>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-value">{{ risk_factors_count }}</div>
+            <div class="stat-label">Risk Factors</div>
+            <a href="{{ url_for('admin.risk_factors') }}" class="btn btn-secondary">Manage</a>
+        </div>
+    </div>
+    
+    <div class="dashboard-actions">
+        <div class="action-card">
+            <h3>Stroke Types</h3>
+            <p>Manage different types of strokes and their descriptions.</p>
+            <a href="{{ url_for('admin.stroke_types') }}" class="btn btn-primary">Manage Stroke Types</a>
+        </div>
+        
+        <div class="action-card">
+            <h3>Risk Factors</h3>
+            <p>Manage risk factors associated with strokes.</p>
+            <a href="{{ url_for('admin.risk_factors') }}" class="btn btn-primary">Manage Risk Factors</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

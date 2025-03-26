@@ -1,0 +1,82 @@
+<!-- templates/risk_factors.html -->
+{% extends "base.html" %}
+
+{% block title %}Risk Factors - Stroke Education{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <div class="form-progress">
+        <div class="progress-step completed">
+            <span class="step-number">✓</span>
+            <span class="step-label">Personal Info</span>
+        </div>
+        <div class="progress-connector completed"></div>
+        <div class="progress-step active">
+            <span class="step-number">2</span>
+            <span class="step-label">Risk Factors</span>
+        </div>
+        <div class="progress-connector"></div>
+        <div class="progress-step">
+            <span class="step-number">3</span>
+            <span class="step-label">Education</span>
+        </div>
+    </div>
+
+    <div class="form-content">
+        <h2>Medical Information</h2>
+        <form method="POST" action="{{ url_for('main.risk_factors') }}">
+            {{ form.hidden_tag() }}
+            
+            <div class="form-group">
+                {{ form.stroke_type.label }}
+                {{ form.stroke_type(class="form-control") }}
+                {% if form.stroke_type.errors %}
+                    {% for error in form.stroke_type.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.risk_factors.label }}
+                <p class="form-hint">(Select up to three)</p>
+                {{ form.risk_factors(class="form-control") }}
+                {% if form.risk_factors.errors %}
+                    {% for error in form.risk_factors.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="form-buttons">
+                <a href="{{ url_for('main.index') }}" class="btn btn-secondary">Back</a>
+                {{ form.submit(class="btn btn-primary") }}
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Enhanced multiple select functionality
+        const riskFactorsSelect = document.querySelector('select[name="risk_factors"]');
+        
+        if (riskFactorsSelect) {
+            // Limit selection to three items
+            riskFactorsSelect.addEventListener('change', function() {
+                const selectedOptions = Array.from(this.selectedOptions);
+                
+                if (selectedOptions.length > 3) {
+                    alert('Please select no more than three risk factors');
+                    
+                    // Deselect the last selected option
+                    const lastIndex = selectedOptions.length - 1;
+                    selectedOptions[lastIndex].selected = false;
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

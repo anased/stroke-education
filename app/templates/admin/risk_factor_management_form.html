@@ -1,0 +1,32 @@
+<!-- templates/admin/risk_factor_management_form.html -->
+{% extends "admin/base.html" %}
+
+{% block title %}{{ title }} - Admin{% endblock %}
+
+{% block content %}
+<div class="admin-form-container">
+    <div class="admin-form-header">
+        <h2>{{ title }} for {{ risk_factor.name }}</h2>
+        <a href="{{ url_for('admin.risk_factor_management', risk_factor_id=risk_factor.id) }}" class="btn btn-secondary">Back to Management Strategies</a>
+    </div>
+    
+    <form method="POST" class="admin-form">
+        {{ form.hidden_tag() }}
+        
+        <div class="form-group">
+            {{ form.description.label }}
+            {{ form.description(class="form-control", rows=5) }}
+            {% if form.description.errors %}
+                {% for error in form.description.errors %}
+                    <span class="error">{{ error }}</span>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        <div class="form-buttons">
+            <a href="{{ url_for('admin.risk_factor_management', risk_factor_id=risk_factor.id) }}" class="btn btn-secondary">Cancel</a>
+            {{ form.submit(class="btn btn-primary") }}
+        </div>
+    </form>
+</div>
+{% endblock %}

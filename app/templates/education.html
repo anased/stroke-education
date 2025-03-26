@@ -1,0 +1,82 @@
+<!-- templates/education.html -->
+{% extends "base.html" %}
+
+{% block title %}Your Education Plan - Stroke Education{% endblock %}
+
+{% block content %}
+<div class="education-container">
+    <div class="form-progress">
+        <div class="progress-step completed">
+            <span class="step-number">✓</span>
+            <span class="step-label">Personal Info</span>
+        </div>
+        <div class="progress-connector completed"></div>
+        <div class="progress-step completed">
+            <span class="step-number">✓</span>
+            <span class="step-label">Risk Factors</span>
+        </div>
+        <div class="progress-connector completed"></div>
+        <div class="progress-step active">
+            <span class="step-number">3</span>
+            <span class="step-label">Education</span>
+        </div>
+    </div>
+
+    <div class="education-results">
+        <h2>Welcome to Your Personalized Education Journey</h2>
+        <div class="welcome-message">
+            <p>Hello, <strong>{{ education_data.user.name }}</strong>! We've created a personalized education plan based on your information.</p>
+        </div>
+        
+        <div class="stroke-info">
+            <h3>About Your Stroke Type: {{ education_data.stroke_info.name }}</h3>
+            <p>{{ education_data.stroke_info.description }}</p>
+            
+            <h4>Management Strategies:</h4>
+            <ul>
+                {% for strategy in education_data.stroke_info.management %}
+                    <li>{{ strategy }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        {% if education_data.risk_factor_info %}
+            <div class="risk-factors-info">
+                <h3>Managing Your Risk Factors</h3>
+                {% for factor_name, factor_info in education_data.risk_factor_info.items() %}
+                    <div class="risk-factor">
+                        <h4>{{ factor_name }}</h4>
+                        <p>{{ factor_info.description }}</p>
+                        
+                        <h5>Management Strategies:</h5>
+                        <ul>
+                            {% for strategy in factor_info.management %}
+                                <li>{{ strategy }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        <div class="education-actions">
+            <button id="print-btn" class="btn btn-secondary">Print This Information</button>
+            <a href="{{ url_for('main.index') }}" class="btn btn-primary">Start Over</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const printBtn = document.getElementById('print-btn');
+        
+        if (printBtn) {
+            printBtn.addEventListener('click', function() {
+                window.print();
+            });
+        }
+    });
+</script>
+{% endblock %}

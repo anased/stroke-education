@@ -1,0 +1,68 @@
+<!-- templates/admin/risk_factor_management.html -->
+{% extends "admin/base.html" %}
+
+{% block title %}Manage Risk Factor Management - Admin{% endblock %}
+
+{% block content %}
+<div class="admin-content-section">
+    <div class="section-header">
+        <h2>Management Strategies for {{ risk_factor.name }}</h2>
+        <div class="header-actions">
+            <a href="{{ url_for('admin.risk_factors') }}" class="btn btn-secondary">Back to Risk Factors</a>
+            <a href="{{ url_for('admin.add_risk_factor_management', risk_factor_id=risk_factor.id) }}" class="btn btn-primary">Add Management Strategy</a>
+        </div>
+    </div>
+    
+    <div class="risk-factor-info">
+        <h3>About {{ risk_factor.name }}</h3>
+        <p>{{ risk_factor.description }}</p>
+    </div>
+    
+    {% if management_strategies %}
+    <div class="data-table-wrapper">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Management Strategy</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for strategy in management_strategies %}
+                <tr>
+                    <td>{{ strategy.description }}</td>
+                    <td class="action-cell">
+                        <a href="{{ url_for('admin.edit_risk_factor_management', id=strategy.id) }}" class="btn btn-sm btn-secondary">Edit</a>
+                        <form action="{{ url_for('admin.delete_risk_factor_management', id=strategy.id) }}" method="POST" class="delete-form">
+                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <p>No management strategies yet for this risk factor.</p>
+        <a href="{{ url_for('admin.add_risk_factor_management', risk_factor_id=risk_factor.id) }}" class="btn btn-primary">Add Management Strategy</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Confirmation for delete buttons
+        const deleteForms = document.querySelectorAll('.delete-form');
+        deleteForms.forEach(form => {
+            form.addEventListener('submit', function(e) {
+                if (!confirm('Are you sure you want to delete this management strategy?')) {
+                    e.preventDefault();
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

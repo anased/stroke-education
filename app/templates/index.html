@@ -1,0 +1,72 @@
+<!-- templates/index.html -->
+{% extends "base.html" %}
+
+{% block title %}Home - Stroke Education{% endblock %}
+
+{% block content %}
+<div class="stroke-form">
+    <h2>Stroke Education Assessment</h2>
+    <form method="POST" action="{{ url_for('main.get_education') }}">
+        {{ form.hidden_tag() }}
+        
+        <div class="form-group">
+            {{ form.stroke_type.label }}
+            {{ form.stroke_type(class="form-control") }}
+            {% if form.stroke_type.errors %}
+                {% for error in form.stroke_type.errors %}
+                    <span class="error">{{ error }}</span>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            {{ form.risk_factors.label }}
+            {{ form.risk_factors(class="form-control") }}
+            {% if form.risk_factors.errors %}
+                {% for error in form.risk_factors.errors %}
+                    <span class="error">{{ error }}</span>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        {{ form.submit(class="btn btn-primary") }}
+    </form>
+</div>
+
+{% if education_data %}
+<div class="education-results">
+    <h3>Your Personalized Education Information</h3>
+    
+    <div class="stroke-info">
+        <h4>About Your Stroke Type</h4>
+        <p>{{ education_data.stroke_info.description }}</p>
+        
+        <h5>Management Strategies:</h5>
+        <ul>
+            {% for strategy in education_data.stroke_info.management %}
+                <li>{{ strategy }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    {% if education_data.risk_factor_info %}
+        <div class="risk-factors-info">
+            <h4>Managing Your Risk Factors</h4>
+            {% for factor_name, factor_info in education_data.risk_factor_info.items() %}
+                <div class="risk-factor">
+                    <h5>{{ factor_name }}</h5>
+                    <p>{{ factor_info.description }}</p>
+                    
+                    <h6>Management Strategies:</h6>
+                    <ul>
+                        {% for strategy in factor_info.management %}
+                            <li>{{ strategy }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+{% endif %}
+{% endblock %}

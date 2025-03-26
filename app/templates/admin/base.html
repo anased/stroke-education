@@ -1,0 +1,52 @@
+<!-- templates/admin/base.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Admin - Stroke Education{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="admin-panel">
+    {% if current_user.is_authenticated %}
+    <header class="admin-header">
+        <nav class="admin-nav">
+            <div class="container admin-container">
+                <h1>Stroke Education Admin</h1>
+                <div class="nav-links">
+                    <a href="{{ url_for('admin.dashboard') }}">Dashboard</a>
+                    <a href="{{ url_for('admin.stroke_types') }}">Stroke Types</a>
+                    <a href="{{ url_for('admin.risk_factors') }}">Risk Factors</a>
+                    <a href="{{ url_for('admin.logout') }}">Logout</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+    {% endif %}
+
+    <main class="container admin-content">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="admin-footer">
+        <div class="container">
+            <p>&copy; 2025 Stroke Education App - Admin Panel</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
