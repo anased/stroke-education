@@ -1,20 +1,22 @@
-<!-- templates/admin/login.html -->
-{% extends "admin/base.html" %}
+<!-- templates/auth/login.html -->
+{% extends "base.html" %}
 
-{% block title %}Admin Login - Stroke Education{% endblock %}
+{% block title %}Login - Stroke Education{% endblock %}
 
 {% block content %}
-<div class="admin-login-container">
-    <div class="admin-form-box">
-        <h2>Admin Login</h2>
-        <form method="POST" action="{{ url_for('admin.login') }}">
+<div class="form-container">
+    <div class="form-content">
+        <h2>Welcome Back</h2>
+        <p>Please log in to access your stroke education plan.</p>
+        
+        <form method="POST" action="{{ url_for('auth.login') }}">
             {{ form.hidden_tag() }}
             
             <div class="form-group">
-                {{ form.username.label }}
-                {{ form.username(class="form-control", placeholder="Enter your username") }}
-                {% if form.username.errors %}
-                    {% for error in form.username.errors %}
+                {{ form.email.label }}
+                {{ form.email(class="form-control", placeholder="Enter your email") }}
+                {% if form.email.errors %}
+                    {% for error in form.email.errors %}
                         <span class="error">{{ error }}</span>
                     {% endfor %}
                 {% endif %}
@@ -39,6 +41,11 @@
                 {{ form.submit(class="btn btn-primary") }}
             </div>
         </form>
+        
+        <div class="auth-links">
+            <p>Don't have an account yet? <a href="{{ url_for('auth.register') }}">Register here</a></p>
+            <p>Need to create a new education plan? <a href="{{ url_for('main.index') }}">Start here</a></p>
+        </div>
     </div>
 </div>
 {% endblock %}

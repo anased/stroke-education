@@ -11,8 +11,23 @@
 <body>
     <header>
         <nav>
-            <div class="container">
-                <h1>Stroke Education</h1>
+            <div class="container nav-container">
+                <h1><a href="{{ url_for('main.index') }}" class="logo-link">Stroke Education</a></h1>
+                <div class="nav-links">
+                    {% if current_user.is_authenticated %}
+                        {% if current_user.__class__.__name__ == 'Admin' %}
+                            <a href="{{ url_for('admin.dashboard') }}">Admin Dashboard</a>
+                            <a href="{{ url_for('admin.logout') }}">Logout</a>
+                        {% else %}
+                            <a href="{{ url_for('auth.dashboard') }}">My Dashboard</a>
+                            <a href="{{ url_for('main.index') }}">New Assessment</a>
+                            <a href="{{ url_for('auth.logout') }}">Logout</a>
+                        {% endif %}
+                    {% else %}
+                        <a href="{{ url_for('main.index') }}">Start Assessment</a>
+                        <a href="{{ url_for('auth.login') }}">Login</a>
+                    {% endif %}
+                </div>
             </div>
         </nav>
     </header>
@@ -41,4 +56,3 @@
     {% block extra_js %}{% endblock %}
 </body>
 </html>
-

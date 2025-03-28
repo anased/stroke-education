@@ -22,6 +22,14 @@
         </div>
     </div>
 
+    {% if show_registration %}
+    <div class="registration-prompt">
+        <h3>Save Your Education Plan</h3>
+        <p>Create an account to access your personalized education plan anytime:</p>
+        <a href="{{ url_for('main.register_after_assessment') }}" class="btn btn-primary">Create Account</a>
+    </div>
+    {% endif %}
+
     <div class="education-results">
         <h2>Welcome to Your Personalized Education Journey</h2>
         <div class="welcome-message">
@@ -61,22 +69,34 @@
         
         <div class="education-actions">
             <button id="print-btn" class="btn btn-secondary">Print This Information</button>
-            <a href="{{ url_for('main.index') }}" class="btn btn-primary">Start Over</a>
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('auth.dashboard') }}" class="btn btn-primary">Back to Dashboard</a>
+            {% else %}
+                <a href="{{ url_for('main.index') }}" class="btn btn-primary">Start Over</a>
+            {% endif %}
         </div>
     </div>
 </div>
 {% endblock %}
 
-{% block extra_js %}
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const printBtn = document.getElementById('print-btn');
-        
-        if (printBtn) {
-            printBtn.addEventListener('click', function() {
-                window.print();
-            });
-        }
-    });
-</script>
+{% block extra_css %}
+<style>
+    .registration-prompt {
+        background-color: var(--light-gray);
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        text-align: center;
+        border-left: 4px solid var(--secondary-color);
+    }
+    
+    .registration-prompt h3 {
+        color: var(--primary-color);
+        margin-bottom: 0.5rem;
+    }
+    
+    .registration-prompt p {
+        margin-bottom: 1rem;
+    }
+</style>
 {% endblock %}

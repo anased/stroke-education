@@ -1,0 +1,56 @@
+<!-- templates/auth/register.html -->
+{% extends "base.html" %}
+
+{% block title %}Register - Stroke Education{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <div class="form-content">
+        <h2>Complete Your Registration</h2>
+        <p>Create a password to access your stroke education plan in the future.</p>
+        
+        <form method="POST" action="{{ url_for('auth.register') }}">
+            {{ form.hidden_tag() }}
+            
+            <div class="form-group">
+                {{ form.email.label }}
+                {{ form.email(class="form-control", placeholder="Enter your email") }}
+                {% if form.email.errors %}
+                    {% for error in form.email.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.password.label }}
+                {{ form.password(class="form-control", placeholder="Choose a secure password") }}
+                {% if form.password.errors %}
+                    {% for error in form.password.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                {{ form.confirm_password.label }}
+                {{ form.confirm_password(class="form-control", placeholder="Enter the same password again") }}
+                {% if form.confirm_password.errors %}
+                    {% for error in form.confirm_password.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="form-buttons">
+                {{ form.submit(class="btn btn-primary") }}
+            </div>
+        </form>
+        
+        <div class="auth-links">
+            <p>Already registered? <a href="{{ url_for('auth.login') }}">Login here</a></p>
+            <p>Need to create a new education plan? <a href="{{ url_for('main.index') }}">Start here</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

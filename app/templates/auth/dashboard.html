@@ -1,0 +1,133 @@
+<!-- templates/auth/dashboard.html -->
+{% extends "base.html" %}
+
+{% block title %}My Education Dashboard - Stroke Education{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h2>Your Stroke Education Dashboard</h2>
+        <p>Welcome back, <strong>{{ current_user.name }}</strong>. Here's your personalized information.</p>
+    </div>
+
+    <div class="dashboard-content">
+        <div class="dashboard-card profile-card">
+            <div class="card-header">
+                <h3>Your Profile</h3>
+                <a href="#" class="btn btn-sm btn-secondary">Edit</a>
+            </div>
+            <div class="card-content">
+                <p><strong>Name:</strong> {{ current_user.name }}</p>
+                <p><strong>Email:</strong> {{ current_user.email }}</p>
+                <p><strong>Date of Birth:</strong> {{ current_user.date_of_birth.strftime('%B %d, %Y') }}</p>
+                <p><strong>Phone:</strong> {{ current_user.phone or "Not provided" }}</p>
+                <p><strong>Last Login:</strong> {{ current_user.last_login.strftime('%B %d, %Y at %H:%M') if current_user.last_login else "First login" }}</p>
+            </div>
+        </div>
+        
+        <div class="dashboard-card condition-card">
+            <div class="card-header">
+                <h3>Your Condition</h3>
+            </div>
+            <div class="card-content">
+                <p><strong>Stroke Type:</strong> {{ current_user.stroke_type.name }}</p>
+                <p><strong>Risk Factors:</strong></p>
+                <ul>
+                    {% for risk_factor in current_user.risk_factors %}
+                        <li>{{ risk_factor.name }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        
+        <div class="dashboard-card education-card">
+            <div class="card-header">
+                <h3>Your Education Plan</h3>
+                <a href="{{ url_for('main.education') }}" class="btn btn-sm btn-primary">View Full Plan</a>
+            </div>
+            <div class="card-content">
+                <div class="stroke-info-summary">
+                    <h4>About {{ current_user.stroke_type.name }} Stroke</h4>
+                    <p>{{ current_user.stroke_type.description }}</p>
+                </div>
+                
+                {% if current_user.risk_factors %}
+                <div class="risk-factors-summary">
+                    <h4>Managing Your Risk Factors</h4>
+                    <p>Click on "View Full Plan" to see detailed management strategies for your specific risk factors.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="dashboard-actions">
+        <a href="{{ url_for('auth.logout') }}" class="btn btn-secondary">Log Out</a>
+        <a href="{{ url_for('main.index') }}" class="btn btn-primary">Start New Assessment</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .dashboard-container {
+        background-color: var(--white);
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        max-width: 900px;
+        margin: 0 auto 2rem;
+        padding: 2rem;
+    }
+    
+    .dashboard-header {
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid var(--secondary-color);
+    }
+    
+    .dashboard-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+    
+    .dashboard-card {
+        background-color: var(--light-gray);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    
+    .card-header {
+        background-color: var(--primary-color);
+        color: var(--white);
+        padding: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .card-header h3 {
+        margin: 0;
+        font-size: 1.25rem;
+    }
+    
+    .card-content {
+        padding: 1.5rem;
+    }
+    
+    .dashboard-actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 2rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--light-gray);
+    }
+    
+    @media (max-width: 768px) {
+        .dashboard-content {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
